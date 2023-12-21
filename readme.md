@@ -88,7 +88,7 @@ MIN-MAX, COUNT-AVG-SUM, GROUP BY, JOINS (INNER, OUTER, LEFT, RIGHT
 	SELECT COUNT(*) FROM ogrenci
 	
 	17) Öğrenci tablosundaki toplam öğrenci sayısını toplam sayı takma(alias kullanımı) adı ile listeleyin.
-	
+	SELECT COUNT(ogrno) AS 'toplam_sayi' FROM ogrenci
 	
 	18) Öğrenci tablosunda kaç farklı isimde öğrenci olduğunu listeleyiniz.
 	  SELECT COUNT(DISTINCT o.ograd) FROM ogrenci AS o
@@ -110,7 +110,8 @@ MIN-MAX, COUNT-AVG-SUM, GROUP BY, JOINS (INNER, OUTER, LEFT, RIGHT
 	INNER JOIN tur AS t ON t.turno = k.turno WHERE  t.turadi = 'Dram')
 	
 	24) numarası 15 olan öğrencinin okuduğu toplam sayfa sayısını bulunuz.
-	
+	SELECT SUM(k.sayfasayisi) FROM ogrenci AS o INNER JOIN islem AS i ON o.ogrno=i.ogrno
+    INNER JOIN kitap AS k ON i.kitapno=k.kitapno WHERE o.ogrno='15'
 	
 	25) İsme göre öğrenci sayılarının adedini bulunuz.(Örn: ali 5 tane, ahmet 8 tane )
 	SELECT o.ograd, COUNT(o.ograd) FROM ogrenci AS o GROUP BY o.ograd
@@ -123,6 +124,10 @@ MIN-MAX, COUNT-AVG-SUM, GROUP BY, JOINS (INNER, OUTER, LEFT, RIGHT
 	GROUP BY o.sinif,o.cinsiyet HAVING sinif is not null AND cinsiyet is not null
 	
 	28) Her öğrencinin adını, soyadını ve okuduğu toplam sayfa sayısını büyükten küçüğe doğru listeleyiniz.
-	
+	SELECT o.ograd, o.ogrsoyad, SUM(k.sayfasayisi) FROM ogrenci AS o INNER JOIN islem AS i ON o.ogrno= i.ogrno
+    INNER JOIN kitap AS k ON i.kitapno=k.kitapno GROUP BY o.ogrno, o.ograd, o.ogrsoyad
+    ORDER BY SUM(k.sayfasayisi) DESC
 	
 	29) Her öğrencinin okuduğu kitap sayısını getiriniz.
+	SELECT o.ograd, o.ogrsoyad, COUNT(k.kitapno) FROM ogrenci AS o INNER JOIN islem AS i ON o.ogrno= i.ogrno
+    INNER JOIN kitap AS k ON i.kitapno=k.kitapno GROUP BY o.ogrno, o.ograd, o.ogrsoyad
